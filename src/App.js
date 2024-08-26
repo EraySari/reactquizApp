@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./Header";
+import Main from "./Main";
+import Start from "./Start";
+import Loader from "./Loader";
+import Questions from "./Questions";
+import Result from "./Result";
 
-function App() {
+import Progress from "./Progress";
+import Footer from "./Footer";
+import NextButton from "./NextButton";
+import Timer from "./Timer";
+
+import { useQuiz } from "./QuizContext";
+
+export default function App() {
+  const { status } = useQuiz();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header />
+      <Main>
+        {status === "loading" && <Loader />}
+        {status === "error" && <Loader />}
+        {status === "ready" && <Start />}
+        {status === "active" && (
+          <>
+            <Progress />
+            <Questions />
+            <Footer>
+              <Timer />
+              <NextButton />
+            </Footer>
+          </>
+        )}
+        {status === "finish" && <Result />}
+      </Main>
     </div>
   );
 }
-
-export default App;
